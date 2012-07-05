@@ -27,14 +27,13 @@
     
     -->
     <servlet>
-        <servlet-name>HelloWorld</servlet-name>
-        <display-name>Hello World</display-name>
+        <servlet-name>AppServlet</servlet-name>
+        <display-name>Application</display-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>HelloWorld</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>AppServlet</servlet-name>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
     
     <filter>

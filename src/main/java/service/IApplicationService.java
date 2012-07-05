@@ -14,7 +14,7 @@ import javax.ws.rs.*;
  * @author Julien "Roulyo" Fraisse
  */
 @WebService
-@Path("/app")
+@Path("/")
 public interface IApplicationService {
 
     @WebMethod(action = "searchByName")
