@@ -15,10 +15,17 @@ import javax.persistence.*;
 @Table(name = "application")
 public class Application implements Serializable {
 
-    protected Integer id  = null;
+    protected Integer id = null;
     protected String name = null;
     protected String description = null;
     protected String link = null;
+    protected User user = null;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
 
     @Id
     @GeneratedValue
@@ -56,5 +63,9 @@ public class Application implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
