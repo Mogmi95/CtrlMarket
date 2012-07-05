@@ -4,8 +4,8 @@
  */
 package dao;
 
+import entity.Application;
 import entity.User;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,36 +34,56 @@ public class UserDAO implements IUserDAO {
 
     @Override
     @Transactional(readOnly = false)
-    public void add(User u) {
-        entityManager.persist(u);
-        entityManager.close();
+    public Boolean add(User u) {
+        if (get(u.getLogin()) == null) {
+            entityManager.persist(u);
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void update(String oldLogin, User u) {
-        Query q = entityManager.createQuery("update User set"
-                + "login = " + u.getLogin()
-                + "password = " + u.getPassword()
-                + "admin = " + u.getAdmin()
-                + "where login = " + oldLogin);
-        q.executeUpdate();
-        entityManager.close();
+    public Boolean update(String oldName, User u) {
+        User old = get(oldName);
+
+        if (old != null) {
+            old.setAdmin(u.getAdmin());
+            old.setLogin(u.getLogin());
+            old.setPassword(u.getPassword());
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void remove(User u) {
-        Query q = entityManager.createQuery("delete from User where"
-                + "login = " + u.getLogin());
-        q.executeUpdate();
-        entityManager.close();
+    public Boolean remove(User u) {
+        if (get(u.getLogin()) != null) {
+            entityManager.remove(u);
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<User> findAll() {
-        Query q = entityManager.createQuery("select u from User");
+    public Boolean isAdmin(User u) {
+        u = get(u.getLogin());
+
+        if (u != null) {
+            return u.getAdmin();
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
+        Query q = entityManager.createQuery("from User");
         List l = q.getResultList();
         entityManager.close();
 
@@ -72,24 +92,29 @@ public class UserDAO implements IUserDAO {
 
     @Override
     @Transactional(readOnly = true)
-    public User findWithLogin(String login) {
-        Query q = entityManager.createQuery("select u from User where"
-                + "login = " + login);
-        User u = (User) q.getSingleResult();
+    public List<User> searchByLogin(String login) {
+        Query q = entityManager.createQuery("select u from User u where "
+                + "login like :name");
+        q.setParameter("name", '%' + login + '%');
+        List l = q.getResultList();
         entityManager.close();
 
-        return u;
+        return l;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Boolean isAdmin(User u) {
-        Query q = entityManager.createQuery("select u from User where"
-                + "login = " + u.getLogin()
-                + "and password = " + u.getPassword());
-        u = (User) q.getSingleResult();
+    public User get(String login) {
+        Query q = entityManager.createQuery("select u from User u where "
+                + "login = :name");
+        q.setParameter("name", login);
+        List l = q.getResultList();
         entityManager.close();
-        
-        return u.getAdmin();
+
+        if (!l.isEmpty()) {
+            return (User) l.get(0);
+        } else {
+            return null;
+        }
     }
 }

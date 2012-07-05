@@ -4,7 +4,7 @@
  */
 package dao;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -12,15 +12,17 @@ import java.util.Collection;
  */
 public interface IUserDAO {
 
-    public void add(entity.User u);
+    public Boolean add(entity.User u);
 
-    public void update(String oldName, entity.User u);
+    public Boolean update(String oldName, entity.User u);
 
-    public void remove(entity.User u);
+    public Boolean remove(entity.User u);
 
     public Boolean isAdmin(entity.User u);
     
-    public Collection<entity.User> findAll();
+    public List<entity.User> findAll();
     
-    public entity.User findWithLogin(String login);
+    public List<entity.User> searchByLogin(String login);
+        
+    public entity.User get(String login);
 }
