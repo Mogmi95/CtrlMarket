@@ -12,11 +12,11 @@ import java.util.List;
  */
 public interface IApplicationDAO {
 
-    public void add(entity.Application a);
+    public Boolean add(entity.Application a);
 
-    public void update(String oldName, entity.Application a);
+    public Boolean update(String oldName, entity.Application a);
 
-    public void remove(entity.Application a);
+    public Boolean remove(entity.Application a);
 
     public List<entity.Application> findAll();
 

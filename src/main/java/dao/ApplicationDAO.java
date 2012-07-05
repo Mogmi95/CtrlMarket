@@ -33,32 +33,39 @@ public class ApplicationDAO implements IApplicationDAO {
 
     @Override
     @Transactional(readOnly = false)
-    public void add(Application a) {
-        entityManager.persist(a);
-        entityManager.close();
+    public Boolean add(Application a) {
+        if (get(a.getName()) == null) {
+            entityManager.persist(a);
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void update(String oldName, Application a) {
-        Query q = entityManager.createQuery("update Application a set "
-                + "a.name = :name"
-                + "a.description = :desc"
-                + "a.link = :link"
-                + "where name = :oldName");
-        q.setParameter("name", a.getName()).setParameter("desc", a.getDescription()).setParameter("link", a.getLink()).setParameter("oldName", oldName);
-        q.executeUpdate();
-        entityManager.close();
+    public Boolean update(String oldName, Application a) {
+        Application old = get(oldName);
+
+        if (old != null) {
+            old.setDescription(a.getDescription());
+            old.setName(a.getName());
+            old.setLink(a.getLink());
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void remove(Application a) {
-        Query q = entityManager.createQuery("delete from Application where "
-                + "name = :name");
-        q.setParameter("name", a.getName());
-        q.executeUpdate();
-        entityManager.close();
+    public Boolean remove(Application a) {
+        if (get(a.getName()) != null) {
+            entityManager.remove(a);
+            entityManager.close();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -89,9 +96,13 @@ public class ApplicationDAO implements IApplicationDAO {
         Query q = entityManager.createQuery("select a from Application a where "
                 + "name = :name");
         q.setParameter("name", name);
-        Application a = (Application) q.getSingleResult();
+        List l = q.getResultList();
         entityManager.close();
 
-        return a;
+        if (!l.isEmpty()) {
+            return (Application) l.get(0);
+        } else {
+            return null;
+        }
     }
 }

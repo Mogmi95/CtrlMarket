@@ -26,7 +26,7 @@ public class ApplicationService implements IApplicationService {
         try {
             return mapper.writeValueAsString(l);
         } catch (IOException ex) {
-            return "KO";
+            return "{ \"status\":\"KO\" }";
         }
     }
 
@@ -37,9 +37,12 @@ public class ApplicationService implements IApplicationService {
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
-        dao.add(a);
+        if (dao.add(a)) {
+            return "{ \"status\":\"OK\" }";
+        } else {
+             return "{ \"status\":\"KO\" }";
+        }
 
-        return "OK";
     }
 
     @Override
@@ -49,7 +52,7 @@ public class ApplicationService implements IApplicationService {
         try {
             return mapper.writeValueAsString(l);
         } catch (IOException ex) {
-            return "KO";
+            return "{ \"status\":\"KO\" }";
         }
     }
 
@@ -60,16 +63,21 @@ public class ApplicationService implements IApplicationService {
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
-        dao.update(oldName, a);
-
-        return "OK";
+        if (dao.update(oldName, a)) {
+            return "{ \"status\":\"OK\" }";
+        } else {
+            return "{ \"status\":\"KO\" }";
+        }
     }
 
     @Override
     public String delete(String name) {
         Application a = dao.get(name);
-        dao.remove(a);
-        
-        return "OK";
+
+        if (a != null && dao.remove(a)) {
+            return "{ \"status\":\"OK\" }";
+        } else {
+            return "{ \"status\":\"KO\" }";
+        }
     }
 }
