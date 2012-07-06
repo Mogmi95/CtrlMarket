@@ -36,6 +36,16 @@
         <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <display-name>User</display-name>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user/*</url-pattern>
+    </servlet-mapping>
+    
     <filter>
         <filter-name>JpaFilter</filter-name>
         <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
