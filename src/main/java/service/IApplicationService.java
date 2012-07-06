@@ -35,7 +35,8 @@ public interface IApplicationService {
     @Produces("application/json")
     public String add(@PathParam("name") @WebParam(name = "name") String name,
             @PathParam("desc") @WebParam(name = "desc") String desc,
-            @PathParam("link") @WebParam(name = "link") String link);
+            @PathParam("link") @WebParam(name = "link") String link,
+            @PathParam("user") @WebParam(name = "user") String user);
 
     @WebMethod(action = "update")
     @GET
@@ -44,7 +45,8 @@ public interface IApplicationService {
     public String update(@PathParam("oldName") @WebParam(name = "oldName") String oldName,
             @PathParam("name") @WebParam(name = "name") String name,
             @PathParam("desc") @WebParam(name = "desc") String desc,
-            @PathParam("link") @WebParam(name = "link") String link);
+            @PathParam("link") @WebParam(name = "link") String link,
+            @PathParam("user") @WebParam(name = "user") String user);
 
     @WebMethod(action = "delete")
     @GET

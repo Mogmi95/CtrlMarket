@@ -1,10 +1,12 @@
 package service;
 
 import dao.IApplicationDAO;
+import dao.IUserDAO;
 import java.io.IOException;
 import javax.jws.WebService;
 import org.codehaus.jackson.map.ObjectMapper;
 import entity.Application;
+import entity.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +19,9 @@ public class ApplicationService implements IApplicationService {
 
     @Autowired
     IApplicationDAO dao;
+    @Autowired
+    IUserDAO udao;
+    
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -31,12 +36,19 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String add(String name, String desc, String link) {
+    public String add(String name, String desc, String link, String user) {
         Application a = new Application();
+        User u;
+        
+        u = udao.get(user);
+        if (u == null)
+            return "{ \"status\":\"KO\" }";
 
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
+        a.setUser(u);
+        
         if (dao.add(a)) {
             return "{ \"status\":\"OK\" }";
         } else {
@@ -57,12 +69,19 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String update(String oldName, String name, String desc, String link) {
+    public String update(String oldName, String name, String desc, String link, String user) {
         Application a = new Application();
+        User u;
+        
+        u = udao.get(user);
+        if (u == null)
+            return "{ \"status\":\"KO\" }";
 
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
+        a.setUser(u);
+        
         if (dao.update(oldName, a)) {
             return "{ \"status\":\"OK\" }";
         } else {

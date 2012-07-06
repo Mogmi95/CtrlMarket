@@ -23,7 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserService implements IUserService{
 
     @Autowired
+    IApplicationDAO adao;
+    @Autowired
     IUserDAO dao;
+    
     private ObjectMapper mapper = new ObjectMapper();
     
     @Override

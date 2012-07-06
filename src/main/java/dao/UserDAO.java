@@ -4,6 +4,7 @@
  */
 package dao;
 
+import entity.Application;
 import entity.User;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -119,6 +120,24 @@ public class UserDAO implements IUserDAO {
 
         if (!l.isEmpty()) {
             return (User) l.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Application> getApp(String login) {
+        
+        Query q = entityManager.createQuery("select a from Application a where "
+                + "user = :name");
+        
+        q.setParameter("name", login);
+        List l = q.getResultList();
+        entityManager.close();
+
+        if (!l.isEmpty()) {
+            return l;
         } else {
             return null;
         }

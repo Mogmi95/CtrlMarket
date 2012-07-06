@@ -25,4 +25,6 @@ public interface IUserDAO {
     public List<entity.User> searchByLogin(String login);
         
     public entity.User get(String login);
+    
+    public List<entity.Application> getApp(String login);
 }
