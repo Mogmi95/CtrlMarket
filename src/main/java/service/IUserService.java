@@ -22,7 +22,7 @@ public interface IUserService {
     
     @WebMethod(action = "add")
     @GET
-    @Path("add/{login}/{password}")
+    @Path("/add/{login}/{password}")
     @Produces("application/json")
     public String add(@PathParam("login") @WebParam(name = "login") String login,
         @PathParam("password") @WebParam(name = "password") String password);
