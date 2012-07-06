@@ -23,26 +23,36 @@
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-    <bean id="requestHandler" class="service.ApplicationService" />
+    <bean id="appRequestHandler" class="service.ApplicationService" />
 
-    <jaxws:endpoint id="soap" implementor="#requestHandler" address="/soap"/>
+    <jaxws:endpoint id="appsoap" implementor="#appRequestHandler" address="/app/soap"/>
   
-    <jaxrs:server id="rest" address="/rest/">
+    <jaxrs:server id="apprest" address="/app/rest">
         <jaxrs:serviceBeans>
-            <ref bean="requestHandler" />
+            <ref bean="appRequestHandler" />
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
-            <entry key="feed" value="application/atom+xml" />
             <entry key="json" value="application/json" />
-            <entry key="xml" value="application/xml" />
-            <entry key="html" value="text/html" />
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+    
+    <bean id="userRequestHandler" class="service.UserService" />
+
+    <jaxws:endpoint id="usersoap" implementor="#userRequestHandler" address="/user/soap"/>
+  
+    <jaxrs:server id="userrest" address="/user/rest">
+        <jaxrs:serviceBeans>
+            <ref bean="userRequestHandler" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json" />
         </jaxrs:extensionMappings>
     </jaxrs:server>
 
 
     <context:component-scan base-package="dao">
         <context:include-filter type="annotation"
-                            expression="org.springframework.stereotype.Repository" />
+                                expression="org.springframework.stereotype.Repository" />
     </context:component-scan>
     
     <!-- Database -->

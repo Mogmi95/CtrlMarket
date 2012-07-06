@@ -4,14 +4,11 @@
  */
 package service;
 
-import dao.IApplicationDAO;
 import dao.IUserDAO;
 import entity.User;
 import java.io.IOException;
 import java.util.List;
 import javax.jws.WebService;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

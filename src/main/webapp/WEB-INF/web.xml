@@ -9,23 +9,6 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     
-    <!-- Default files -->
-<!--    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>-->
-    
-    <!-- Spring MVC -->
-<!--    <servlet>
-        <servlet-name>dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
-    
-    -->
     <servlet>
         <servlet-name>AppServlet</servlet-name>
         <display-name>Application</display-name>
@@ -33,19 +16,9 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AppServlet</servlet-name>
-        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <display-name>User</display-name>
-        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/user/*</url-pattern>
-    </servlet-mapping>
-    
+
     <filter>
         <filter-name>JpaFilter</filter-name>
         <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
