@@ -4,6 +4,7 @@
  */
 package service;
 
+import dao.IApplicationDAO;
 import dao.IUserDAO;
 import entity.User;
 import java.io.IOException;
