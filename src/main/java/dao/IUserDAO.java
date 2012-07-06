@@ -18,7 +18,7 @@ public interface IUserDAO {
 
     public Boolean remove(entity.User u);
 
-    public Boolean isAdmin(entity.User u);
+    public Boolean isAdmin(String hash);
     
     public List<entity.User> findAll();
     

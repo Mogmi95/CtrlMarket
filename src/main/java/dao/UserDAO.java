@@ -4,12 +4,12 @@
  */
 package dao;
 
-import entity.Application;
 import entity.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import misc.MD5Utility;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,11 +71,17 @@ public class UserDAO implements IUserDAO {
 
     @Override
     @Transactional(readOnly = true)
-    public Boolean isAdmin(User u) {
-        u = get(u.getLogin());
-
-        if (u != null) {
-            return u.getAdmin();
+    public Boolean isAdmin(String hash) {
+        Query q = entityManager.createQuery("select u from User u where "
+                + "admin = true");
+        List l = q.getResultList();
+        entityManager.close();
+        
+        for (Object o : l)
+        {
+            User u = (User) o;
+            if (MD5Utility.computeHash(u.getLogin(), u.getPassword()).equals(hash))
+                return true;
         }
         return false;
     }
