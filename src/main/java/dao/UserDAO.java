@@ -136,10 +136,6 @@ public class UserDAO implements IUserDAO {
         List l = q.getResultList();
         entityManager.close();
 
-        if (!l.isEmpty()) {
-            return l;
-        } else {
-            return null;
-        }
+        return l;
     }
 }
