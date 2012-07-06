@@ -17,27 +17,31 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author dev
  */
 @WebService(endpointInterface = "service.IUserService")
-public class UserService implements IUserService{
+public class UserService implements IUserService {
 
     @Autowired
     IUserDAO dao;
     private ObjectMapper mapper = new ObjectMapper();
-    
+
     @Override
     public String add(String login, String password) {
         User a = new User();
         a.setLogin(login);
         a.setPassword(password);
-        
+
         if (dao.add(a)) {
             return "{ \"status\":\"OK\" }";
         } else {
-             return "{ \"status\":\"KO\" }";
+            return "{ \"status\":\"KO\" }";
         }
     }
 
     @Override
-    public String delete(String login) {
+    public String delete(String login, String cred) {
+        if (!dao.isAdmin(cred)) {
+            return "{ \"status\":\"KO\" }";
+        }
+
         User a = dao.get(login);
 
         if (a != null && dao.remove(a)) {
@@ -48,7 +52,11 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public String update(String oldlogin, String login, String password, Boolean isadmin) {
+    public String update(String oldlogin, String login, String password, Boolean isadmin, String cred) {
+        if (!dao.isAdmin(cred)) {
+            return "{ \"status\":\"KO\" }";
+        }
+
         User a = new User();
 
         a.setLogin(login);
@@ -82,5 +90,4 @@ public class UserService implements IUserService{
             return "{ \"status\":\"KO\" }";
         }
     }
-
 }

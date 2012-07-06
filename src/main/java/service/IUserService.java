@@ -19,40 +19,40 @@ import javax.ws.rs.Produces;
 @WebService
 @Path("/")
 public interface IUserService {
-    
+
     @WebMethod(action = "add")
     @GET
     @Path("/add/{login}/{password}")
     @Produces("application/json")
     public String add(@PathParam("login") @WebParam(name = "login") String login,
-        @PathParam("password") @WebParam(name = "password") String password);
+            @PathParam("password") @WebParam(name = "password") String password);
 
     @WebMethod(action = "delete")
     @GET
-    @Path("/delete/{login}")
+    @Path("/delete/{login}/{cred}")
     @Produces("application/json")
-    public String delete(@PathParam("login") @WebParam(name = "login") String login);
-    
+    public String delete(@PathParam("login") @WebParam(name = "login") String login,
+            @PathParam("cred") @WebParam(name = "cred") String cred);
+
     @WebMethod(action = "update")
     @GET
-    @Path("/update/{oldlogin}/{login}/{password}/{isadmin}")
+    @Path("/update/{oldlogin}/{login}/{password}/{isadmin}/{cred}")
     @Produces("application/json")
     public String update(@PathParam("oldlogin") @WebParam(name = "oldlogin") String oldlogin,
             @PathParam("login") @WebParam(name = "login") String login,
             @PathParam("password") @WebParam(name = "password") String password,
-            @PathParam("isadmin") @WebParam(name = "isadmin") Boolean isadmin);
+            @PathParam("isadmin") @WebParam(name = "isadmin") Boolean isadmin,
+            @PathParam("cred") @WebParam(name = "cred") String cred);
 
     @WebMethod(action = "findAll")
     @GET
     @Path("/findAll")
     @Produces("application/json")
     public String findAll();
-    
+
     @WebMethod(action = "searchByLogin")
     @GET
     @Path("/searchByLogin/{login}")
     @Produces("application/json")
     public String searchByLogin(@PathParam("login") @WebParam(name = "login") String login);
-
 }
-

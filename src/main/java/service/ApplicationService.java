@@ -1,6 +1,7 @@
 package service;
 
 import dao.IApplicationDAO;
+import dao.IUserDAO;
 import java.io.IOException;
 import javax.jws.WebService;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,6 +18,9 @@ public class ApplicationService implements IApplicationService {
 
     @Autowired
     IApplicationDAO dao;
+    @Autowired
+    IUserDAO udao;
+    
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -31,7 +35,10 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String add(String name, String desc, String link) {
+    public String add(String name, String desc, String link, String cred) {
+        if (!udao.isAdmin(cred))
+            return "{ \"status\":\"KO\" }";
+        
         Application a = new Application();
 
         a.setName(name);
@@ -40,7 +47,7 @@ public class ApplicationService implements IApplicationService {
         if (dao.add(a)) {
             return "{ \"status\":\"OK\" }";
         } else {
-             return "{ \"status\":\"KO\" }";
+            return "{ \"status\":\"KO\" }";
         }
 
     }
@@ -57,7 +64,10 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String update(String oldName, String name, String desc, String link) {
+    public String update(String oldName, String name, String desc, String link, String cred) {
+        if (!udao.isAdmin(cred))
+            return "{ \"status\":\"KO\" }";
+        
         Application a = new Application();
 
         a.setName(name);
@@ -71,7 +81,10 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String delete(String name) {
+    public String delete(String name, String cred) {
+        if (!udao.isAdmin(cred))
+            return "{ \"status\":\"KO\" }";
+        
         Application a = dao.get(name);
 
         if (a != null && dao.remove(a)) {

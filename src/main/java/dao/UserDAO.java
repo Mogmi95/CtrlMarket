@@ -80,9 +80,15 @@ public class UserDAO implements IUserDAO {
         for (Object o : l)
         {
             User u = (User) o;
+            System.out.println(MD5Utility.computeHash(u.getLogin(), u.getPassword()));
+            System.out.println(hash);
             if (MD5Utility.computeHash(u.getLogin(), u.getPassword()).equals(hash))
+            {
+                System.out.println("true");
                 return true;
+            }
         }
+        System.out.println("false");
         return false;
     }
 

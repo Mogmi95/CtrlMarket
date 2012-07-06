@@ -31,24 +31,27 @@ public interface IApplicationService {
 
     @WebMethod(action = "add")
     @GET
-    @Path("/add/{name}/{desc}/{link}")
+    @Path("/add/{name}/{desc}/{link}/{cred}")
     @Produces("application/json")
     public String add(@PathParam("name") @WebParam(name = "name") String name,
             @PathParam("desc") @WebParam(name = "desc") String desc,
-            @PathParam("link") @WebParam(name = "link") String link);
+            @PathParam("link") @WebParam(name = "link") String link,
+            @PathParam("cred") @WebParam(name = "cred") String cred);
 
     @WebMethod(action = "update")
     @GET
-    @Path("/update/{oldName}/{name}/{desc}/{link}")
+    @Path("/update/{oldName}/{name}/{desc}/{link}/{cred}")
     @Produces("application/json")
     public String update(@PathParam("oldName") @WebParam(name = "oldName") String oldName,
             @PathParam("name") @WebParam(name = "name") String name,
             @PathParam("desc") @WebParam(name = "desc") String desc,
-            @PathParam("link") @WebParam(name = "link") String link);
+            @PathParam("link") @WebParam(name = "link") String link,
+            @PathParam("cred") @WebParam(name = "cred") String cred);
 
     @WebMethod(action = "delete")
     @GET
-    @Path("/delete/{name}")
+    @Path("/delete/{name}/{cred}")
     @Produces("application/json")
-    public String delete(@PathParam("name") @WebParam(name = "name") String name);
+    public String delete(@PathParam("name") @WebParam(name = "name") String name,
+            @PathParam("cred") @WebParam(name = "cred") String cred);
 }

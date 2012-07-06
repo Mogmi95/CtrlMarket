@@ -24,9 +24,7 @@
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
     <bean id="appRequestHandler" class="service.ApplicationService" />
-
     <jaxws:endpoint id="appsoap" implementor="#appRequestHandler" address="/app/soap"/>
-  
     <jaxrs:server id="apprest" address="/app/rest">
         <jaxrs:serviceBeans>
             <ref bean="appRequestHandler" />
@@ -37,9 +35,7 @@
     </jaxrs:server>
     
     <bean id="userRequestHandler" class="service.UserService" />
-
     <jaxws:endpoint id="usersoap" implementor="#userRequestHandler" address="/user/soap"/>
-  
     <jaxrs:server id="userrest" address="/user/rest">
         <jaxrs:serviceBeans>
             <ref bean="userRequestHandler" />
