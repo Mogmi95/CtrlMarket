@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.jws.WebService;
 import org.codehaus.jackson.map.ObjectMapper;
 import entity.Application;
+import entity.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +21,6 @@ public class ApplicationService implements IApplicationService {
     IApplicationDAO dao;
     @Autowired
     IUserDAO udao;
-    
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -35,15 +35,24 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String add(String name, String desc, String link, String cred) {
-        if (!udao.isAdmin(cred))
+    public String add(String name, String desc, String link, String user, String cred) {
+        if (!udao.isAdmin(cred)) {
             return "{ \"status\":\"KO\" }";
-        
+        }
+
         Application a = new Application();
+        User u;
+
+        u = udao.get(user);
+        if (u == null) {
+            return "{ \"status\":\"KO\" }";
+        }
 
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
+        a.setUser(u);
+
         if (dao.add(a)) {
             return "{ \"status\":\"OK\" }";
         } else {
@@ -64,15 +73,24 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public String update(String oldName, String name, String desc, String link, String cred) {
-        if (!udao.isAdmin(cred))
+    public String update(String oldName, String name, String desc, String link, String user, String cred) {
+        if (!udao.isAdmin(cred)) {
             return "{ \"status\":\"KO\" }";
-        
+        }
+
         Application a = new Application();
+        User u;
+
+        u = udao.get(user);
+        if (u == null) {
+            return "{ \"status\":\"KO\" }";
+        }
 
         a.setName(name);
         a.setDescription(desc);
         a.setLink(link);
+        a.setUser(u);
+
         if (dao.update(oldName, a)) {
             return "{ \"status\":\"OK\" }";
         } else {
@@ -82,9 +100,10 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     public String delete(String name, String cred) {
-        if (!udao.isAdmin(cred))
+        if (!udao.isAdmin(cred)) {
             return "{ \"status\":\"KO\" }";
-        
+        }
+
         Application a = dao.get(name);
 
         if (a != null && dao.remove(a)) {

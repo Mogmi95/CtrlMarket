@@ -4,6 +4,7 @@
  */
 package service;
 
+import dao.IApplicationDAO;
 import dao.IUserDAO;
 import entity.User;
 import java.io.IOException;
@@ -20,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserService implements IUserService {
 
     @Autowired
+    IApplicationDAO adao;
+    @Autowired
     IUserDAO dao;
+    
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
