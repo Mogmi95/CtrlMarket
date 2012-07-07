@@ -55,4 +55,10 @@ public interface IUserService {
     @Path("/searchByLogin/{login}")
     @Produces("application/json")
     public String searchByLogin(@PathParam("login") @WebParam(name = "login") String login);
+    
+    @WebMethod(action = "getAppsForUser")
+    @GET
+    @Path("/getAppsForUser/{login}")
+    @Produces("application/json")
+    public String getAppsForUser(@PathParam("login") @WebParam(name = "login") String login);
 }

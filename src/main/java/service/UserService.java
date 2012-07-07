@@ -6,6 +6,7 @@ package service;
 
 import dao.IApplicationDAO;
 import dao.IUserDAO;
+import entity.Application;
 import entity.User;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +25,6 @@ public class UserService implements IUserService {
     IApplicationDAO adao;
     @Autowired
     IUserDAO dao;
-    
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -87,6 +87,17 @@ public class UserService implements IUserService {
     @Override
     public String searchByLogin(String login) {
         List<User> l = dao.searchByLogin(login);
+
+        try {
+            return mapper.writeValueAsString(l);
+        } catch (IOException ex) {
+            return "{ \"status\":\"KO\" }";
+        }
+    }
+
+    @Override
+    public String getAppsForUser(String login) {
+        List<Application> l = dao.getApp(login);
 
         try {
             return mapper.writeValueAsString(l);

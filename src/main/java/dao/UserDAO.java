@@ -137,11 +137,15 @@ public class UserDAO implements IUserDAO {
         
         Query q = entityManager.createQuery("select a from Application a where "
                 + "user = :name");
+        User u = get(login);
+        List l = null;
         
-        q.setParameter("name", login);
-        List l = q.getResultList();
-        entityManager.close();
-
+        if (u != null)
+        {
+            q.setParameter("name", u);
+            l = q.getResultList();
+            entityManager.close();
+        }
         return l;
     }
 }
